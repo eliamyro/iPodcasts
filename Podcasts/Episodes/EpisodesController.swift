@@ -35,7 +35,7 @@ class EpisodesController: UITableViewController {
     // MARK: - EpisodesController Methods
     
     private func setupTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(EpisodeCell.self, forCellReuseIdentifier: cellId)
         tableView.tableFooterView = UIView()
     }
     
@@ -49,7 +49,7 @@ class EpisodesController: UITableViewController {
             switch result {
             case let .rss(feed):
                 feed.items?.forEach({ (feedItem) in
-                    let episode = Episode(title: feedItem.title ?? "")
+                    let episode = Episode(feedItem: feedItem)
                     self.episodes.append(episode)
                 })
                 

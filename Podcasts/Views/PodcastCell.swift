@@ -24,6 +24,9 @@ class PodcastCell: UITableViewCell {
         }
     }
     
+    
+    // MARK: - Views
+    
     lazy var podcastImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "appicon"))
         imageView.backgroundColor = .red

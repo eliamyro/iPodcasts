@@ -7,7 +7,16 @@
 //
 
 import Foundation
+import FeedKit
 
 struct Episode {
-    var title: String?
+    let title: String
+    let pubDate: Date
+    let description: String
+    
+    init(feedItem: RSSFeedItem) {
+        title = feedItem.title ?? ""
+        pubDate = feedItem.pubDate ?? Date()
+        description = feedItem.description ?? ""
+    }
 }
