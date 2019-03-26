@@ -20,6 +20,9 @@ class EpisodeCell: UITableViewCell {
             pubDateLabel.text = dateFormatter.string(from: episode.pubDate)
             titleLabel.text = episode.title
             descriptionLabel.text = episode.description
+            
+            let url = URL(string: episode.imageUrl ?? "")
+            episodeImageView.sd_setImage(with: url)
         }
     }
     
@@ -27,7 +30,6 @@ class EpisodeCell: UITableViewCell {
     
     lazy var episodeImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "appicon"))
-        imageView.backgroundColor = .red
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView

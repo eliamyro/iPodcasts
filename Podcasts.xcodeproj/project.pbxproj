@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		812E356E21BDA83B0089CC41 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E356D21BDA83B0089CC41 /* SearchResults.swift */; };
+		812FBB13224AAF160096A7B5 /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812FBB12224AAF160096A7B5 /* RSSFeed.swift */; };
 		8138A98B21BD293400CE2500 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138A98A21BD293400CE2500 /* AppDelegate.swift */; };
 		8138A98D21BD293400CE2500 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138A98C21BD293400CE2500 /* ViewController.swift */; };
 		8138A99221BD293500CE2500 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8138A99121BD293500CE2500 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		812E356D21BDA83B0089CC41 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
+		812FBB12224AAF160096A7B5 /* RSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		8138A98721BD293400CE2500 /* Podcasts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Podcasts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8138A98A21BD293400CE2500 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8138A98C21BD293400CE2500 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +74,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		812FBB11224AAEF90096A7B5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				812FBB12224AAF160096A7B5 /* RSSFeed.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		8138A97E21BD293400CE2500 = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +104,7 @@
 		8138A98921BD293400CE2500 /* Podcasts */ = {
 			isa = PBXGroup;
 			children = (
+				812FBB11224AAEF90096A7B5 /* Extensions */,
 				8198900F2205CFBC00F4E3A0 /* Views */,
 				813A3B962204F1F8008DA059 /* API */,
 				81DE5D5C21BD47C60071BB4A /* Models */,
@@ -292,6 +303,7 @@
 				81DE5D6021BD48690071BB4A /* PodcastsSearchController+UITableViewDelegate.swift in Sources */,
 				81DE5D5B21BD473A0071BB4A /* PodcastsSearchController.swift in Sources */,
 				819890112205CFDC00F4E3A0 /* PodcastCell.swift in Sources */,
+				812FBB13224AAF160096A7B5 /* RSSFeed.swift in Sources */,
 				8138A98D21BD293400CE2500 /* ViewController.swift in Sources */,
 				81E1E7F12247E59C00C3956D /* EpisodesController.swift in Sources */,
 				8138A98B21BD293400CE2500 /* AppDelegate.swift in Sources */,

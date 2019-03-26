@@ -29,7 +29,6 @@ class PodcastCell: UITableViewCell {
     
     lazy var podcastImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "appicon"))
-        imageView.backgroundColor = .red
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView

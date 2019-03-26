@@ -8,10 +8,12 @@
 
 import Foundation
 import Alamofire
+import FeedKit
 
 class APIService {
     
     typealias PodcastsSearchCompletion = ([Podcast]) -> Void
+    typealias EpisodeFetchCompletion = ([Episode]) -> Void
     
     let baseiTuneSearchURL = "https://itunes.apple.com/search"
     
@@ -37,6 +39,21 @@ class APIService {
             } catch let decodeError {
                 print("Failed to decode json: ", decodeError.localizedDescription)
             }
+        }
+    }
+    
+    func fetchEpisodes(feedUrl: String, completionHandler: @escaping EpisodeFetchCompletion) {
+        guard let url = URL(string: feedUrl) else { return }
+        let parser = FeedParser(URL: url)
+        parser.parseAsync { (result) in
+            if let error = result.error {
+                print("Faild to parse feed: ", error.localizedDescription)
+                return
+            }
+            
+            guard let feed = result.rssFeed else { return }
+            let episodes = feed.toEpisodes()
+            completionHandler(episodes)
         }
     }
 }
