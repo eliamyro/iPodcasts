@@ -17,6 +17,7 @@
 		8138A99F21BD2F1500CE2500 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138A99E21BD2F1500CE2500 /* MainTabBarController.swift */; };
 		813A3B982204F20F008DA059 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A3B972204F20F008DA059 /* APIService.swift */; };
 		8145A09722494D5400A779CB /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8145A09622494D5400A779CB /* EpisodeCell.swift */; };
+		81722F60224B751D00347363 /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81722F5F224B751D00347363 /* PlayerDetailsView.swift */; };
 		819890112205CFDC00F4E3A0 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819890102205CFDC00F4E3A0 /* PodcastCell.swift */; };
 		81DE5D5B21BD473A0071BB4A /* PodcastsSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DE5D5A21BD473A0071BB4A /* PodcastsSearchController.swift */; };
 		81DE5D5E21BD47D40071BB4A /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DE5D5D21BD47D40071BB4A /* Podcast.swift */; };
@@ -41,6 +42,7 @@
 		8138A99E21BD2F1500CE2500 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		813A3B972204F20F008DA059 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		8145A09622494D5400A779CB /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
+		81722F5F224B751D00347363 /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
 		819890102205CFDC00F4E3A0 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
 		81DE5D5A21BD473A0071BB4A /* PodcastsSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsSearchController.swift; sourceTree = "<group>"; };
 		81DE5D5D21BD47D40071BB4A /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				81DE5D5C21BD47C60071BB4A /* Models */,
 				81DE5D5921BD47290071BB4A /* Search */,
 				81E1E7EF2247E58800C3956D /* Episodes */,
+				81722F5E224B750600347363 /* Player */,
 				8138A99E21BD2F1500CE2500 /* MainTabBarController.swift */,
 				8138A98C21BD293400CE2500 /* ViewController.swift */,
 				8138A98A21BD293400CE2500 /* AppDelegate.swift */,
@@ -126,6 +129,14 @@
 				813A3B972204F20F008DA059 /* APIService.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		81722F5E224B750600347363 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				81722F5F224B751D00347363 /* PlayerDetailsView.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		8198900F2205CFBC00F4E3A0 /* Views */ = {
@@ -315,6 +326,7 @@
 				8145A09722494D5400A779CB /* EpisodeCell.swift in Sources */,
 				813A3B982204F20F008DA059 /* APIService.swift in Sources */,
 				81DE5D5E21BD47D40071BB4A /* Podcast.swift in Sources */,
+				81722F60224B751D00347363 /* PlayerDetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

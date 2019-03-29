@@ -11,13 +11,13 @@ import UIKit
 extension EpisodesController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return episodes.count
+        return self.episodes.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
         
-        let episode = episodes[indexPath.row]
+        let episode = self.episodes[indexPath.row]
         cell.episode = episode
         
         return cell
@@ -25,5 +25,14 @@ extension EpisodesController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 132
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episode = self.episodes[indexPath.row]
+        
+        let window = UIApplication.shared.keyWindow
+        let playerDetailView = PlayerDetailsView(frame: self.view.frame)
+        playerDetailView.episode = episode
+        window?.addSubview(playerDetailView)
     }
 }
