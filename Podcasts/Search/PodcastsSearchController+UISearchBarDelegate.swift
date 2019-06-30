@@ -12,9 +12,11 @@ import Alamofire
 extension PodcastsSearchController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        APIService.shared.fetchPodcasts(searchText: searchText) { podcasts in
-            self.podcasts = podcasts
-            self.tableView.reloadData()
+        if searchText.count > 2 {
+            APIService.shared.fetchPodcasts(searchText: searchText) { podcasts in
+                self.podcasts = podcasts
+                self.tableView.reloadData()
+            }
         }
     }
 }
