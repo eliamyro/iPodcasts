@@ -7,13 +7,24 @@
 //
 
 import UIKit
+import AVKit
 
 class PlayerDetailsView: UIView {
+    
+    let player: AVPlayer = {
+        let avPlayer = AVPlayer()
+        avPlayer.automaticallyWaitsToMinimizeStalling = false
+        
+        return avPlayer
+    }()
     
     var episode: Episode? {
         didSet {
             episodeTitleLabel.text = episode?.title
             authorLabel.text = episode?.author
+            
+            playEpisode()
+            
             guard let imageUrl = URL(string: episode?.imageUrl ?? "") else { return }
             episodeImageView.sd_setImage(with: imageUrl)
         }
@@ -105,10 +116,11 @@ class PlayerDetailsView: UIView {
     
     lazy var playPauseButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "pause")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
         
+        button.addTarget(self, action: #selector(handlePlayPauseButton), for: .touchUpInside)
         return button
     }()
     
@@ -222,7 +234,26 @@ class PlayerDetailsView: UIView {
 
     }
     
+    private func playEpisode() {
+        guard let url = URL(string: episode?.streamUrl ?? "") else { return }
+        let playerItem = AVPlayerItem(url: url)
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
+    }
+    
+    // MARK: - PlayerDetailsView Actions
+    
     @objc private func handleDismissButton() {
        self.removeFromSuperview()
+    }
+    
+    @objc private func handlePlayPauseButton() {
+        if player.timeControlStatus == .paused {
+            player.play()
+            playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            player.pause()
+            playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
 }
