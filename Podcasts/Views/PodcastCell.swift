@@ -72,17 +72,7 @@ class PodcastCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(podcastImageView)
-        addSubview(podcastStackView)
-        
-        podcastImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-        podcastImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-        podcastImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        podcastImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        podcastStackView.leadingAnchor.constraint(equalTo: podcastImageView.trailingAnchor, constant: 12).isActive = true
-        podcastStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
-        podcastStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {

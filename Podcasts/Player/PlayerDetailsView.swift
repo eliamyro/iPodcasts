@@ -11,6 +11,8 @@ import AVKit
 
 class PlayerDetailsView: UIView {
     
+    private let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+    
     let player: AVPlayer = {
         let avPlayer = AVPlayer()
         avPlayer.automaticallyWaitsToMinimizeStalling = false
@@ -30,7 +32,6 @@ class PlayerDetailsView: UIView {
         }
     }
     
-    
     // MARK: - Views
     
     lazy var dismissButton: UIButton = {
@@ -45,6 +46,8 @@ class PlayerDetailsView: UIView {
     lazy var episodeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "appicon")
+        imageView.layer.cornerRadius = 5
+        imageView.clipsToBounds = true
         
         return imageView
     }()
@@ -80,7 +83,6 @@ class PlayerDetailsView: UIView {
         
         return stackView
     }()
-    
     
     lazy var episodeTitleLabel: UILabel = {
         let label = UILabel()
@@ -133,7 +135,6 @@ class PlayerDetailsView: UIView {
         return button
     }()
     
-    
     lazy var controlsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [spaceView1, rewindButton, playPauseButton, forwardButton, spaceView2])
         stackView.axis = .horizontal
@@ -179,66 +180,28 @@ class PlayerDetailsView: UIView {
         return stackView
     }()
 
-    
     // MARK: - UIView Methods
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         
-        addViews()
+        setupUI()
+        
+        initialEpisodeImageView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    // MARK: - PlayerDetailsView Methods
-    
-    private func addViews() {
-        addSubview(playerStackView)
-        setupViews()
-    }
-    
-    private func setupViews() {
-        dismissButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    override func didAddSubview(_ subview: UIView) {
+        super.didAddSubview(subview)
         
-        episodeImageView.heightAnchor.constraint(equalTo: episodeImageView.widthAnchor, multiplier: 1).isActive = true
-        episodeSlider.heightAnchor.constraint(equalToConstant: 36).isActive = true
-
-        episodeTitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
-        episodeTitleLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
-        
-        authorLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        authorLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
-        
-        controlsStackView.setContentHuggingPriority(UILayoutPriority(250), for: .vertical)
-        
-        rewindButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        playPauseButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        forwardButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        
-        playerStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        playerStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 24).isActive = true
-        playerStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -24).isActive = true
-        playerStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -24).isActive = true
-        
-        timeStackView.heightAnchor.constraint(equalToConstant: 22).isActive = true
-        
-        mutedVolumeImageView.widthAnchor.constraint(equalToConstant: 34).isActive = true
-        mutedVolumeImageView.heightAnchor.constraint(equalToConstant: 34).isActive = true
-        
-        maxVolumeImageView.widthAnchor.constraint(equalToConstant: 34).isActive = true
-        maxVolumeImageView.heightAnchor.constraint(equalToConstant: 34).isActive = true
-
-    }
-    
-    private func playEpisode() {
-        guard let url = URL(string: episode?.streamUrl ?? "") else { return }
-        let playerItem = AVPlayerItem(url: url)
-        player.replaceCurrentItem(with: playerItem)
-        player.play()
+        let time = CMTimeMake(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            self.enlargeEpisodeImageView()
+        }
     }
     
     // MARK: - PlayerDetailsView Actions
@@ -251,9 +214,34 @@ class PlayerDetailsView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+            enlargeEpisodeImageView()
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+            shrinkEpisodeImageView()
         }
+    }
+    
+    private func playEpisode() {
+        guard let url = URL(string: episode?.streamUrl ?? "") else { return }
+        let playerItem = AVPlayerItem(url: url)
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
+    }
+    
+    private func initialEpisodeImageView() {
+        episodeImageView.transform = shrunkenTransform
+    }
+    
+    private func enlargeEpisodeImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImageView.transform = .identity
+        })
+    }
+    
+    private func shrinkEpisodeImageView() {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.episodeImageView.transform = self.shrunkenTransform
+        })
     }
 }

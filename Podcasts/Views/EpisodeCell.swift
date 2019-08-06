@@ -75,17 +75,7 @@ class EpisodeCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(episodeImageView)
-        addSubview(episodeStackView)
-        
-        episodeImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-        episodeImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-        episodeImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        episodeImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        episodeStackView.leadingAnchor.constraint(equalTo: episodeImageView.trailingAnchor, constant: 12).isActive = true
-        episodeStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
-        episodeStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {

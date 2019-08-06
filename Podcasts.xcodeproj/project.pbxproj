@@ -16,6 +16,9 @@
 		8138A99D21BD2A8200CE2500 /* _.gitignore_ in Resources */ = {isa = PBXBuildFile; fileRef = 8138A99C21BD2A8200CE2500 /* _.gitignore_ */; };
 		8138A99F21BD2F1500CE2500 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8138A99E21BD2F1500CE2500 /* MainTabBarController.swift */; };
 		813A3B982204F20F008DA059 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A3B972204F20F008DA059 /* APIService.swift */; };
+		8143A70822F9702C00BBAC04 /* PlayerDetailsView+SetupUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8143A70722F9702C00BBAC04 /* PlayerDetailsView+SetupUI.swift */; };
+		8143A70A22F9712500BBAC04 /* PodcastCell+SetupUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8143A70922F9712500BBAC04 /* PodcastCell+SetupUI.swift */; };
+		8143A70C22F971B600BBAC04 /* EpisodeCell+SetupUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8143A70B22F971B600BBAC04 /* EpisodeCell+SetupUI.swift */; };
 		8145A09722494D5400A779CB /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8145A09622494D5400A779CB /* EpisodeCell.swift */; };
 		81722F60224B751D00347363 /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81722F5F224B751D00347363 /* PlayerDetailsView.swift */; };
 		819890112205CFDC00F4E3A0 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819890102205CFDC00F4E3A0 /* PodcastCell.swift */; };
@@ -41,6 +44,9 @@
 		8138A99C21BD2A8200CE2500 /* _.gitignore_ */ = {isa = PBXFileReference; lastKnownFileType = text; path = _.gitignore_; sourceTree = "<group>"; };
 		8138A99E21BD2F1500CE2500 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		813A3B972204F20F008DA059 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		8143A70722F9702C00BBAC04 /* PlayerDetailsView+SetupUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlayerDetailsView+SetupUI.swift"; sourceTree = "<group>"; };
+		8143A70922F9712500BBAC04 /* PodcastCell+SetupUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PodcastCell+SetupUI.swift"; sourceTree = "<group>"; };
+		8143A70B22F971B600BBAC04 /* EpisodeCell+SetupUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodeCell+SetupUI.swift"; sourceTree = "<group>"; };
 		8145A09622494D5400A779CB /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
 		81722F5F224B751D00347363 /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
 		819890102205CFDC00F4E3A0 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
@@ -135,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				81722F5F224B751D00347363 /* PlayerDetailsView.swift */,
+				8143A70722F9702C00BBAC04 /* PlayerDetailsView+SetupUI.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -143,7 +150,9 @@
 			isa = PBXGroup;
 			children = (
 				819890102205CFDC00F4E3A0 /* PodcastCell.swift */,
+				8143A70922F9712500BBAC04 /* PodcastCell+SetupUI.swift */,
 				8145A09622494D5400A779CB /* EpisodeCell.swift */,
+				8143A70B22F971B600BBAC04 /* EpisodeCell+SetupUI.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -316,6 +325,8 @@
 				819890112205CFDC00F4E3A0 /* PodcastCell.swift in Sources */,
 				812FBB13224AAF160096A7B5 /* RSSFeed.swift in Sources */,
 				8138A98D21BD293400CE2500 /* ViewController.swift in Sources */,
+				8143A70822F9702C00BBAC04 /* PlayerDetailsView+SetupUI.swift in Sources */,
+				8143A70A22F9712500BBAC04 /* PodcastCell+SetupUI.swift in Sources */,
 				81E1E7F12247E59C00C3956D /* EpisodesController.swift in Sources */,
 				8138A98B21BD293400CE2500 /* AppDelegate.swift in Sources */,
 				81E1E7F32247EA4E00C3956D /* EpisodesController+UITableViewDelegate.swift in Sources */,
@@ -325,6 +336,7 @@
 				812E356E21BDA83B0089CC41 /* SearchResults.swift in Sources */,
 				8145A09722494D5400A779CB /* EpisodeCell.swift in Sources */,
 				813A3B982204F20F008DA059 /* APIService.swift in Sources */,
+				8143A70C22F971B600BBAC04 /* EpisodeCell+SetupUI.swift in Sources */,
 				81DE5D5E21BD47D40071BB4A /* Podcast.swift in Sources */,
 				81722F60224B751D00347363 /* PlayerDetailsView.swift in Sources */,
 			);
@@ -395,7 +407,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -450,7 +462,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
