@@ -25,7 +25,7 @@ extension PlayerDetailsView {
         dismissButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
         episodeImageView.heightAnchor.constraint(equalTo: episodeImageView.widthAnchor, multiplier: 1).isActive = true
-        episodeSlider.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        currentTimeSlider.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         episodeTitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
         episodeTitleLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)

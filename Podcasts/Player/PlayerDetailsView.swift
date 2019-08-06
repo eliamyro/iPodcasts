@@ -52,32 +52,35 @@ class PlayerDetailsView: UIView {
         return imageView
     }()
     
-    lazy var episodeSlider: UISlider = {
+    lazy var currentTimeSlider: UISlider = {
         let slider = UISlider()
+        slider.minimumValue = 0
         
         return slider
     }()
     
     lazy var currentTimeLabel: UILabel = {
         let label = UILabel()
-        label.text = "00:00"
+        label.text = "00:00:00"
         label.textAlignment = .left
-        label.textColor = .darkGray
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .lightGray
         
         return label
     }()
     
-    lazy var totalTimeLabel: UILabel = {
+    lazy var durationLabel: UILabel = {
         let label = UILabel()
-        label.text = "02:23"
+        label.text = "00:00:00"
         label.textAlignment = .right
-        label.textColor = .darkGray
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .lightGray
         
         return label
     }()
     
     lazy var timeStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [currentTimeLabel, totalTimeLabel])
+        let stackView = UIStackView(arrangedSubviews: [currentTimeLabel, durationLabel])
         stackView.axis = .horizontal
         stackView.distribution = UIStackView.Distribution.fillEqually
         
@@ -171,7 +174,7 @@ class PlayerDetailsView: UIView {
     }()
     
     lazy var playerStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dismissButton, episodeImageView, episodeSlider, timeStackView, episodeTitleLabel, authorLabel, controlsStackView, volumeStackView])
+        let stackView = UIStackView(arrangedSubviews: [dismissButton, episodeImageView, currentTimeSlider, timeStackView, episodeTitleLabel, authorLabel, controlsStackView, volumeStackView])
         stackView.spacing = 5
         stackView.axis = .vertical
         stackView.backgroundColor = .blue
@@ -197,10 +200,13 @@ class PlayerDetailsView: UIView {
     override func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
         
+        observePlayerCurrentTime()
+        
         let time = CMTimeMake(value: 1, timescale: 3)
         let times = [NSValue(time: time)]
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
             self.enlargeEpisodeImageView()
+            self.currentTimeSlider.maximumValue =  Float(CMTimeGetSeconds(self.player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1)))
         }
     }
     
@@ -243,5 +249,24 @@ class PlayerDetailsView: UIView {
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.episodeImageView.transform = self.shrunkenTransform
         })
+    }
+    
+    private func observePlayerCurrentTime() {
+        let interval = CMTimeMake(value: 1, timescale: 1)
+            player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
+                if self.player.currentItem?.status == .readyToPlay {
+                self.currentTimeLabel.text = "\(time.toDisplayString())"
+                
+                let durationTime = self.player.currentItem?.duration
+                self.durationLabel.text = "\(durationTime?.toDisplayString() ?? "00:00:00")"
+                
+                self.updateCurrentTimeSlider()
+                }}
+    }
+    
+    private func updateCurrentTimeSlider() {
+        let currentTimeSeconds = Float(CMTimeGetSeconds(player.currentTime()))
+        
+        currentTimeSlider.setValue(currentTimeSeconds, animated: true)
     }
 }
