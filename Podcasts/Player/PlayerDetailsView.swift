@@ -56,6 +56,7 @@ class PlayerDetailsView: UIView {
         let slider = UISlider()
         slider.minimumValue = 0
         
+        slider.addTarget(self, action: #selector(handleCurrentTimeSlideChange), for: .valueChanged)
         return slider
     }()
     
@@ -116,6 +117,7 @@ class PlayerDetailsView: UIView {
         button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
         
+        button.addTarget(self, action: #selector(handleRewind), for: .touchUpInside)
         return button
     }()
     
@@ -135,6 +137,7 @@ class PlayerDetailsView: UIView {
         button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
         
+        button.addTarget(self, action: #selector(handleFastForward), for: .touchUpInside)
         return button
     }()
     
@@ -154,8 +157,12 @@ class PlayerDetailsView: UIView {
     }()
     
     lazy var volumeSlider: UISlider = {
-       let slider = UISlider()
+        let slider = UISlider()
+        slider.minimumValue = 0
+        slider.maximumValue = 1
+        slider.value = 1
         
+        slider.addTarget(self, action: #selector(handleVolumeChange), for: .valueChanged)
         return slider
     }()
     
@@ -228,11 +235,37 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    @objc private func handleCurrentTimeSlideChange() {
+        print(currentTimeSlider.value)
+        let time = CMTimeMakeWithSeconds(Float64(currentTimeSlider.value), preferredTimescale: Int32(NSEC_PER_SEC))
+        player.seek(to: time)
+    }
+    
+    @objc private func handleRewind() {
+        seekToCurrentTime(delta: -15)
+    }
+    
+    @objc private func handleFastForward() {
+        seekToCurrentTime(delta: 15)
+    }
+    
+    @objc private func handleVolumeChange(_ sender: UISlider) {
+        player.volume = sender.value
+    }
+    
+    // MARK: - PlayerDetailsView Methods
+    
     private func playEpisode() {
         guard let url = URL(string: episode?.streamUrl ?? "") else { return }
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
         player.play()
+    }
+    
+    private func seekToCurrentTime(delta: Int64) {
+        let deltaSeconds = CMTimeMake(value: delta, timescale: 1)
+        let seekTime = CMTimeAdd(player.currentTime(), deltaSeconds)
+        player.seek(to: seekTime)
     }
     
     private func initialEpisodeImageView() {
