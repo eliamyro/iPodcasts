@@ -44,16 +44,19 @@ class APIService {
     
     func fetchEpisodes(feedUrl: String, completionHandler: @escaping EpisodeFetchCompletion) {
         guard let url = URL(string: feedUrl) else { return }
-        let parser = FeedParser(URL: url)
-        parser.parseAsync { (result) in
-            if let error = result.error {
-                print("Faild to parse feed: ", error.localizedDescription)
-                return
+        
+        DispatchQueue.global(qos: .background).async {
+            let parser = FeedParser(URL: url)
+            parser.parseAsync { (result) in
+                if let error = result.error {
+                    print("Faild to parse feed: ", error.localizedDescription)
+                    return
+                }
+                
+                guard let feed = result.rssFeed else { return }
+                let episodes = feed.toEpisodes()
+                completionHandler(episodes)
             }
-            
-            guard let feed = result.rssFeed else { return }
-            let episodes = feed.toEpisodes()
-            completionHandler(episodes)
         }
     }
 }

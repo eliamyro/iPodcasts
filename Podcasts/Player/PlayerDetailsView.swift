@@ -211,9 +211,9 @@ class PlayerDetailsView: UIView {
         
         let time = CMTimeMake(value: 1, timescale: 3)
         let times = [NSValue(time: time)]
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-            self.enlargeEpisodeImageView()
-            self.currentTimeSlider.maximumValue =  Float(CMTimeGetSeconds(self.player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1)))
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.enlargeEpisodeImageView()
+            self?.currentTimeSlider.maximumValue =  Float(CMTimeGetSeconds(self?.player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1)))
         }
     }
     
@@ -286,14 +286,14 @@ class PlayerDetailsView: UIView {
     
     private func observePlayerCurrentTime() {
         let interval = CMTimeMake(value: 1, timescale: 1)
-            player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
-                if self.player.currentItem?.status == .readyToPlay {
-                self.currentTimeLabel.text = "\(time.toDisplayString())"
+            player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+                if self?.player.currentItem?.status == .readyToPlay {
+                self?.currentTimeLabel.text = "\(time.toDisplayString())"
                 
-                let durationTime = self.player.currentItem?.duration
-                self.durationLabel.text = "\(durationTime?.toDisplayString() ?? "00:00:00")"
+                let durationTime = self?.player.currentItem?.duration
+                self?.durationLabel.text = "\(durationTime?.toDisplayString() ?? "00:00:00")"
                 
-                self.updateCurrentTimeSlider()
+                self?.updateCurrentTimeSlider()
                 }}
     }
     

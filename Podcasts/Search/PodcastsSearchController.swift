@@ -14,6 +14,8 @@ class PodcastsSearchController: UITableViewController {
     
     var podcasts = [Podcast]()
     
+    var timer: Timer?
+    
     
     // MARK: - Views
     
