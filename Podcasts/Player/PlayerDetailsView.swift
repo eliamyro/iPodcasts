@@ -23,12 +23,17 @@ class PlayerDetailsView: UIView {
     var episode: Episode? {
         didSet {
             episodeTitleLabel.text = episode?.title
+            miniEpisodeLabel.text = episode?.title
             authorLabel.text = episode?.author
+            
+            playPauseButton.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            miniPlayButton.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysOriginal), for: .normal)
             
             playEpisode()
             
             guard let imageUrl = URL(string: episode?.imageUrl ?? "") else { return }
             episodeImageView.sd_setImage(with: imageUrl)
+            miniImageView.sd_setImage(with: imageUrl)
         }
     }
     
@@ -39,8 +44,57 @@ class PlayerDetailsView: UIView {
         button.setTitle("Dismiss", for: .normal)
         
         button.addTarget(self, action: #selector(handleDismissButton), for: .touchUpInside)
-        
         return button
+    }()
+    
+    lazy var miniImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "appicon")
+        imageView.contentMode = .scaleAspectFill
+        
+        return imageView
+    }()
+    
+    lazy var miniEpisodeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Episode Title"
+        
+        return label
+    }()
+    
+    lazy var miniPlayButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        
+        button.addTarget(self, action: #selector(handlePlayPauseButton), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var miniForwardButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "fastforward15")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        
+        button.addTarget(self, action: #selector(handleFastForward), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var miniPlayerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [miniImageView, miniEpisodeLabel, miniPlayButton, miniForwardButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
+    lazy var miniPlayerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     lazy var episodeImageView: UIImageView = {
@@ -189,13 +243,13 @@ class PlayerDetailsView: UIView {
         
         return stackView
     }()
-
+    
     // MARK: - UIView Methods
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
-            
+        
         setupUI()
         
         initialEpisodeImageView()
@@ -213,6 +267,8 @@ class PlayerDetailsView: UIView {
         let time = CMTimeMake(value: 1, timescale: 3)
         let times = [NSValue(time: time)]
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+            self?.miniPlayButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
             self?.enlargeEpisodeImageView()
             self?.currentTimeSlider.maximumValue =  Float(CMTimeGetSeconds(self?.player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1)))
         }
@@ -234,10 +290,12 @@ class PlayerDetailsView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
+            miniPlayButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
             enlargeEpisodeImageView()
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
+            miniPlayButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
             shrinkEpisodeImageView()
         }
     }
@@ -293,15 +351,14 @@ class PlayerDetailsView: UIView {
     
     private func observePlayerCurrentTime() {
         let interval = CMTimeMake(value: 1, timescale: 1)
-            player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
-                if self?.player.currentItem?.status == .readyToPlay {
-                self?.currentTimeLabel.text = "\(time.toDisplayString())"
-                
-                let durationTime = self?.player.currentItem?.duration
-                self?.durationLabel.text = "\(durationTime?.toDisplayString() ?? "00:00:00")"
-                
-                self?.updateCurrentTimeSlider()
-                }}
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            self?.currentTimeLabel.text = "\(time.toDisplayString())"
+            
+            let durationTime = self?.player.currentItem?.duration
+            self?.durationLabel.text = "\(durationTime?.toDisplayString() ?? "00:00:00")"
+            
+            self?.updateCurrentTimeSlider()
+        }
     }
     
     private func updateCurrentTimeSlider() {

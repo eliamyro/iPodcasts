@@ -18,11 +18,27 @@ extension PlayerDetailsView {
     }
     
     private func addViews() {
+        addSubview(miniPlayerView)
+        miniPlayerView.addSubview(miniPlayerStackView)
         addSubview(playerStackView)
+        
     }
     
     private func setupConstraints() {
         dismissButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        miniPlayerView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        miniPlayerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        miniPlayerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        
+        miniPlayerStackView.topAnchor.constraint(equalTo: miniPlayerView.topAnchor, constant: 8).isActive = true
+        miniPlayerStackView.leadingAnchor.constraint(equalTo: miniPlayerView.leadingAnchor, constant: 8).isActive = true
+        miniPlayerStackView.bottomAnchor.constraint(equalTo: miniPlayerView.bottomAnchor, constant: -8).isActive = true
+        miniPlayerStackView.trailingAnchor.constraint(equalTo: miniPlayerView.trailingAnchor, constant: -8).isActive = true
+        
+        miniImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        miniPlayButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        miniForwardButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
         
         episodeImageView.heightAnchor.constraint(equalTo: episodeImageView.widthAnchor, multiplier: 1).isActive = true
         currentTimeSlider.heightAnchor.constraint(equalToConstant: 36).isActive = true
