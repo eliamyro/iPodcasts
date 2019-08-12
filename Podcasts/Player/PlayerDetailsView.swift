@@ -194,7 +194,8 @@ class PlayerDetailsView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+            
         setupUI()
         
         initialEpisodeImageView()
@@ -220,7 +221,13 @@ class PlayerDetailsView: UIView {
     // MARK: - PlayerDetailsView Actions
     
     @objc private func handleDismissButton() {
-       self.removeFromSuperview()
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
+        mainTabBarController?.minimizePlayerDetailsView()
+    }
+    
+    @objc private func handleTapMaximize() {
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
+        mainTabBarController?.maximizePlayerDetailsView(episode: nil)
     }
     
     @objc private func handlePlayPauseButton() {
