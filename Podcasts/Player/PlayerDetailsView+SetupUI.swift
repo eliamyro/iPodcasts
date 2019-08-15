@@ -20,6 +20,7 @@ extension PlayerDetailsView {
     private func addViews() {
         addSubview(miniPlayerView)
         miniPlayerView.addSubview(miniPlayerStackView)
+        miniPlayerView.addSubview(miniPlayerDividerView)
         addSubview(playerStackView)
         
     }
@@ -35,6 +36,11 @@ extension PlayerDetailsView {
         miniPlayerStackView.leadingAnchor.constraint(equalTo: miniPlayerView.leadingAnchor, constant: 8).isActive = true
         miniPlayerStackView.bottomAnchor.constraint(equalTo: miniPlayerView.bottomAnchor, constant: -8).isActive = true
         miniPlayerStackView.trailingAnchor.constraint(equalTo: miniPlayerView.trailingAnchor, constant: -8).isActive = true
+        
+        miniPlayerDividerView.bottomAnchor.constraint(equalTo: miniPlayerView.topAnchor).isActive = true
+        miniPlayerDividerView.leadingAnchor.constraint(equalTo: miniPlayerView.leadingAnchor).isActive = true
+        miniPlayerDividerView.trailingAnchor.constraint(equalTo: miniPlayerView.trailingAnchor).isActive = true
+        miniPlayerDividerView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         miniImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
         miniPlayButton.widthAnchor.constraint(equalToConstant: 48).isActive = true

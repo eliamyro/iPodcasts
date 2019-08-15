@@ -97,6 +97,15 @@ class PlayerDetailsView: UIView {
         return view
     }()
     
+    lazy var miniPlayerDividerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.alpha = 0.3
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     lazy var episodeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "appicon")
@@ -238,7 +247,6 @@ class PlayerDetailsView: UIView {
         let stackView = UIStackView(arrangedSubviews: [dismissButton, episodeImageView, currentTimeSlider, timeStackView, episodeTitleLabel, authorLabel, controlsStackView, volumeStackView])
         stackView.spacing = 5
         stackView.axis = .vertical
-        stackView.backgroundColor = .blue
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
@@ -249,6 +257,7 @@ class PlayerDetailsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
         
         setupUI()
         
@@ -284,6 +293,25 @@ class PlayerDetailsView: UIView {
     @objc private func handleTapMaximize() {
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
         mainTabBarController?.maximizePlayerDetailsView(episode: nil)
+    }
+    
+    @objc private func handlePan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .began {
+            print("Began")
+        } else if gesture.state == .changed {
+            print("Changed")
+            let translation = gesture.translation(in: superview)
+            self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+            
+            self.miniPlayerView.alpha = 1 + translation.y / 100
+            self.playerStackView.alpha = 0 - translation.y / 100
+        } else if gesture.state == .ended {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.transform = .identity
+                self.miniPlayerView.alpha = 1
+                self.playerStackView.alpha = 0
+            })
+        }
     }
     
     @objc private func handlePlayPauseButton() {
