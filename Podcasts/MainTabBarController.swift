@@ -12,6 +12,7 @@ class MainTabController: UITabBarController {
     
     var maximizedTopAnchorConstraint: NSLayoutConstraint!
     var minimizedTopAnchorConstraint: NSLayoutConstraint!
+    var bottomAnchorConstraint: NSLayoutConstraint!
     
     let playerDetailsView = PlayerDetailsView()
     
@@ -57,14 +58,16 @@ class MainTabController: UITabBarController {
         maximizedTopAnchorConstraint.isActive = true
         
         minimizedTopAnchorConstraint = playerDetailsView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: -64)
+        bottomAnchorConstraint =  playerDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height)
+        bottomAnchorConstraint.isActive = true
         
         playerDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        playerDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         playerDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
     @objc func minimizePlayerDetailsView() {
         maximizedTopAnchorConstraint.isActive = false
+        bottomAnchorConstraint.constant = view.frame.height
         minimizedTopAnchorConstraint.isActive = true
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -76,14 +79,14 @@ class MainTabController: UITabBarController {
     }
     
     func maximizePlayerDetailsView(episode: Episode?) {
+        minimizedTopAnchorConstraint.isActive = false
+        maximizedTopAnchorConstraint.isActive = true
+        maximizedTopAnchorConstraint.constant = 0
+        bottomAnchorConstraint.constant = 0
         
         if episode != nil {
             playerDetailsView.episode = episode
         }
-        
-        minimizedTopAnchorConstraint.isActive = false
-        maximizedTopAnchorConstraint.isActive = true
-        maximizedTopAnchorConstraint.constant = 0
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()

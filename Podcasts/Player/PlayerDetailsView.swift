@@ -12,6 +12,7 @@ import AVKit
 class PlayerDetailsView: UIView {
     
     private let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+    var panGesture: UIPanGestureRecognizer!
     
     let player: AVPlayer = {
         let avPlayer = AVPlayer()
@@ -22,6 +23,8 @@ class PlayerDetailsView: UIView {
     
     var episode: Episode? {
         didSet {
+            panGesture.isEnabled = false
+            
             episodeTitleLabel.text = episode?.title
             miniEpisodeLabel.text = episode?.title
             authorLabel.text = episode?.author
@@ -256,9 +259,8 @@ class PlayerDetailsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
-        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
         
+        setupGestures()
         setupUI()
         
         initialEpisodeImageView()
@@ -288,30 +290,7 @@ class PlayerDetailsView: UIView {
     @objc private func handleDismissButton() {
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
         mainTabBarController?.minimizePlayerDetailsView()
-    }
-    
-    @objc private func handleTapMaximize() {
-        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
-        mainTabBarController?.maximizePlayerDetailsView(episode: nil)
-    }
-    
-    @objc private func handlePan(gesture: UIPanGestureRecognizer) {
-        if gesture.state == .began {
-            print("Began")
-        } else if gesture.state == .changed {
-            print("Changed")
-            let translation = gesture.translation(in: superview)
-            self.transform = CGAffineTransform(translationX: 0, y: translation.y)
-            
-            self.miniPlayerView.alpha = 1 + translation.y / 100
-            self.playerStackView.alpha = 0 - translation.y / 100
-        } else if gesture.state == .ended {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.transform = .identity
-                self.miniPlayerView.alpha = 1
-                self.playerStackView.alpha = 0
-            })
-        }
+        panGesture.isEnabled = true
     }
     
     @objc private func handlePlayPauseButton() {
@@ -347,6 +326,12 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK: - PlayerDetailsView Methods
+    
+    private func setupGestures() {
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        addGestureRecognizer(panGesture)
+    }
     
     private func playEpisode() {
         guard let url = URL(string: episode?.streamUrl ?? "") else { return }
