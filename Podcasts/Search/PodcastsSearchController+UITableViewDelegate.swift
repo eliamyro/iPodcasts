@@ -41,6 +41,7 @@ extension PodcastsSearchController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let episodesController = EpisodesController()
         episodesController.podcast = podcasts[indexPath.row]
         navigationController?.pushViewController(episodesController, animated: true)

@@ -10,9 +10,7 @@ import UIKit
 
 extension PlayerDetailsView {
     @objc func handleTapMaximize() {
-        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
-        mainTabBarController?.maximizePlayerDetailsView(episode: nil)
-        panGesture.isEnabled = false
+        UIApplication.mainTabBarController()?.maximizePlayerDetailsView(episode: nil)
     }
     
     @objc func handlePan(gesture: UIPanGestureRecognizer) {
@@ -20,6 +18,23 @@ extension PlayerDetailsView {
             handlePanChanged(gesture: gesture)
         } else if gesture.state == .ended {
             handlePanEnded(gesture: gesture)
+        }
+    }
+    
+    @objc func handleDismissalPan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .changed {
+            let translation = gesture.translation(in: self.superview)
+            
+            self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        } else if gesture.state == .ended {
+            let translation = gesture.translation(in: self.superview)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.transform = .identity
+                if translation.y > 100{
+                    UIApplication.mainTabBarController()?.minimizePlayerDetailsView()
+                }
+            })
         }
     }
     
@@ -39,9 +54,7 @@ extension PlayerDetailsView {
             self.transform = .identity
             
             if translation.y < -200 || velocity.y < -500{
-                let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
-                mainTabBarController?.maximizePlayerDetailsView(episode: nil)
-                gesture.isEnabled = false
+                UIApplication.mainTabBarController()?.maximizePlayerDetailsView(episode: nil)
             } else {
                 self.miniPlayerView.alpha = 1
                 self.playerStackView.alpha = 0

@@ -23,8 +23,6 @@ class PlayerDetailsView: UIView {
     
     var episode: Episode? {
         didSet {
-            panGesture.isEnabled = false
-            
             episodeTitleLabel.text = episode?.title
             miniEpisodeLabel.text = episode?.title
             authorLabel.text = episode?.author
@@ -288,8 +286,7 @@ class PlayerDetailsView: UIView {
     // MARK: - PlayerDetailsView Actions
     
     @objc private func handleDismissButton() {
-        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
-        mainTabBarController?.minimizePlayerDetailsView()
+        UIApplication.mainTabBarController()?.minimizePlayerDetailsView()
         panGesture.isEnabled = true
     }
     
@@ -330,7 +327,8 @@ class PlayerDetailsView: UIView {
     private func setupGestures() {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        addGestureRecognizer(panGesture)
+        miniPlayerView.addGestureRecognizer(panGesture)
+        playerStackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     }
     
     private func playEpisode() {

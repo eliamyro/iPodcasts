@@ -40,14 +40,8 @@ extension EpisodesController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let episode = self.episodes[indexPath.row]
-        
-//        let window = UIApplication.shared.keyWindow
-//        let playerDetailView = PlayerDetailsView(frame: self.view.frame)
-//        playerDetailView.episode = episode
-//        window?.addSubview(playerDetailView)
-        
-        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabController
-        mainTabBarController?.maximizePlayerDetailsView(episode: episode)
+        UIApplication.mainTabBarController()?.maximizePlayerDetailsView(episode: episode)
     }
 }
