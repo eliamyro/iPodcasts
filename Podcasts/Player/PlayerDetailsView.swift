@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 class PlayerDetailsView: UIView {
     
@@ -258,6 +259,8 @@ class PlayerDetailsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setupAudioSession()
+        setupRemoteControl()
         setupGestures()
         setupUI()
         
@@ -323,6 +326,34 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK: - PlayerDetailsView Methods
+    
+    // Enable audio background
+    private func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let sessionError {
+            print("Failed to activate Audio session", sessionError)
+        }
+    }
+    
+    private func setupRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { _ -> MPRemoteCommandHandlerStatus in
+            self.handlePlayPauseButton()
+            return .success
+        }
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget(handler: { _ -> MPRemoteCommandHandlerStatus in
+            self.handlePlayPauseButton()
+            return .success
+        })
+    }
     
     private func setupGestures() {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
