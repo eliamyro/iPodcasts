@@ -31,11 +31,22 @@ class PlayerDetailsView: UIView {
             playPauseButton.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysOriginal), for: .normal)
             miniPlayButton.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysOriginal), for: .normal)
             
+            setupNowPlayingInfo()
             playEpisode()
             
             guard let imageUrl = URL(string: episode?.imageUrl ?? "") else { return }
             episodeImageView.sd_setImage(with: imageUrl)
-            miniImageView.sd_setImage(with: imageUrl)
+            miniImageView.sd_setImage(with: imageUrl) { (image, _, _, _) in
+                guard let image = image else { return }
+                let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_) -> UIImage in
+                    return image
+                })
+                
+                var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+                nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
+                
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            }
         }
     }
     
@@ -283,6 +294,8 @@ class PlayerDetailsView: UIView {
             self?.miniPlayButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
             self?.enlargeEpisodeImageView()
             self?.currentTimeSlider.maximumValue =  Float(CMTimeGetSeconds(self?.player.currentItem?.duration ?? CMTimeMake(value: 1, timescale: 1)))
+            
+            self?.setupLockScreenCurrentTime()
         }
     }
     
@@ -299,11 +312,13 @@ class PlayerDetailsView: UIView {
             playPauseButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
             miniPlayButton.setImage(#imageLiteral(resourceName: "pause").withRenderingMode(.alwaysOriginal), for: .normal)
             enlargeEpisodeImageView()
+            setupLockScreenCurrentTime()
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
             miniPlayButton.setImage(#imageLiteral(resourceName: "play").withRenderingMode(.alwaysOriginal), for: .normal)
             shrinkEpisodeImageView()
+            setupLockScreenCurrentTime()
         }
     }
     
@@ -326,6 +341,26 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK: - PlayerDetailsView Methods
+    
+    private func setupNowPlayingInfo() {
+        var nowPlayingInfo = [String : Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = episode?.title
+        nowPlayingInfo[MPMediaItemPropertyArtist] = episode?.author
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
+    private func setupLockScreenCurrentTime() {
+        guard let currentItem = player.currentItem else { return }
+        let duration = CMTimeGetSeconds(currentItem.duration)
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+        
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+        nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = duration
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
     
     // Enable audio background
     private func setupAudioSession() {
